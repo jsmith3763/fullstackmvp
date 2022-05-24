@@ -15,6 +15,7 @@ app.get("/api/todo", async (req, res) => {
         res.json(result.rows);
     } catch (error) {
         console.error(error);
+        res.send("Error: ", error);
     }
 });
 
