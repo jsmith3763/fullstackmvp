@@ -2,6 +2,9 @@ require("dotenv").config();
 const express = require("express");
 const db = require("./database/conn");
 const app = express();
+const { response } = require("express");
+const { json } = require("body-parser");
+
 
 const PORT = process.env.PORT || 3000;
 
@@ -36,12 +39,12 @@ app.get("/api/todo/:id", async (req, res) => {
 app.patch('/api/accounts/:id', async (req, res) => {
     try {
         const { task } = req.body;
-        const currentTask = await pool.query('SELECT * FROM todos WHERE id = $1', [req.params.id]);
+        const currentTask = await db.query('SELECT * FROM todos WHERE id = $1', [req.params.id]);
         const taskObj = {
             task: task || currentTask.rows[0].task,
         }
 
-        const updatedTask = await pool.query('UPDATE todos SET task = $1 WHERE account_id = $2 RETURNING *', [taskObj.task, req.params.id]);
+        const updatedTask = await db.query('UPDATE todos SET task = $1 WHERE account_id = $2 RETURNING *', [taskObj.task, req.params.id]);
         res.send(updatedTask.rows[0]);
     } catch (error) {
         res.send(error.message);
@@ -49,28 +52,26 @@ app.patch('/api/accounts/:id', async (req, res) => {
 })
 
 //post
-app.post('/api/accounts', async (req, res) => {
+app.post('/api/todo', async (req, res) => {
     try {
-        const objKeys = Object.keys(req.body);
-        if (objKeys.length !== 1) {
-            res.send("Ensure you enter a task");
-        } else {
-            const createdAcc = await pool.query(`INSERT INTO todos (task) VALUES ($1) RETURNING *`, [req.body.task]);
-            res.json(createdAcc.rows);
-        }
+        const { task } = req.body;
+        const { rows } = await db.query('INSERT INTO todos (task) VALUES($1) RETURNING *', [task]);
+        res.send({ data: (rows), message: "New task has been created" });
+        console.log({ rows });
+        console.log('Task was created');
     } catch (error) {
-        res.send(error.message);
+        console.error(error);
     }
 });
 
 //delete
 app.delete('/api/todo/:id', async (req, res) => {
     try {
-        const deletedAcc = await pool.query('SELECT * FROM todos WHERE id = $1', [req.params.id]);
-        const deleted = await pool.query('DELETE FROM todos WHERE id = $1', [req.params.id]);
-        res.json(deletedAcc.rows);
+        const deletedTask = await db.query('SELECT * FROM todos WHERE id = $1', [req.params.id]);
+        const deleted = await db.query('DELETE FROM todos WHERE id = $1', [req.params.id]);
+        res.json(deletedTask.rows);
     } catch (error) {
-        res.send(error.message);
+        console.error(error);
     }
 })
 

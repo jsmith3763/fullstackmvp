@@ -1,6 +1,7 @@
 #header {
     display: flex;
     flex-wrap: wrap;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     padding-bottom: 5px;
     width: 50vw;
     margin: auto;
@@ -15,7 +16,8 @@
     flex-wrap: wrap;
     border-style: inset;
     /* flex-direction: column; */
-    width: 30vw;
+    width: 27vw;
+    height: 3vw;
     margin: auto;
     justify-content: center;
     justify-content: space-evenly;
@@ -24,12 +26,12 @@
 #todoContainer {
     display: flex;
     flex-wrap: wrap;
-    width: 25vw;
+    width: 30vw;
     margin: auto;
     justify-content: center;
 }
 
-#taskDiv {
+.taskDiv {
     display: flex;
     padding: 10px;
     justify-content: space-evenly;
