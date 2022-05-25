@@ -28,3 +28,15 @@
     margin: auto;
     justify-content: center;
 }
+
+#taskDiv {
+    display: flex;
+    padding: 10px;
+    justify-content: space-evenly;
+    border-style: inset;
+    min-height: 50px;
+    min-width: 25vw;
+    align-items: center;
+    text-align: center;
+    flex-direction: column;
+}
