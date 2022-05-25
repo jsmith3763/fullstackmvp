@@ -16,6 +16,7 @@ async function getData() {
     const response = await fetch("https://tranquil-hamlet-82276.herokuapp.com/api/todo");
     const data = await response.json();
     console.log(data);
+    console.log(data[0].task)
     createToDoList(data);
 }
 
@@ -23,7 +24,7 @@ function createToDoList(data) {
     //while (listContainer.firstChild) listContainer.removeChild(listContainer.firstChild);
     for (let i = 0; i < data.length; i++) {
         const newTask = document.createElement("div");
-        //newTask.innerText(data.value)
+        newTask.textContent(data[i].task)
         listContainer.appendChild(newTask);
     }
 }
