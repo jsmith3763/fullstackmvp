@@ -1,8 +1,22 @@
 #header {
     display: flex;
-    justify-content: space-evenly;
-    align-items: center;
+    flex-wrap: wrap;
+    padding-bottom: 5px;
+    width: 30vw;
+    margin: auto;
+    justify-content: center;
     font-size: xx-large;
     color: rgb(10, 165, 165);
     border-bottom: double;
+}
+
+#textbox {
+    display: flex;
+    flex-wrap: wrap;
+    border-style: inset;
+    /* flex-direction: column; */
+    width: 20vw;
+    margin: auto;
+    justify-content: center;
+    justify-content: space-evenly;
 }
