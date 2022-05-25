@@ -1,12 +1,16 @@
+body {
+    background-image: url("https://www.pngmagic.com/product_images/Off-white-background-image.jpg")
+}
+
 #header {
     display: flex;
     flex-wrap: wrap;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-family: 'Akshar', sans-serif;
     padding-bottom: 5px;
-    width: 50vw;
+    width: 35vw;
     margin: auto;
     justify-content: center;
-    font-size: xx-large;
+    font-size: 3rem;
     color: rgb(10, 165, 165);
     border-bottom: double;
 }
@@ -40,5 +44,6 @@
     min-width: 25vw;
     align-items: center;
     text-align: center;
+    background-color: rgba(10, 165, 165, 0.438);
     flex-direction: column;
 }
