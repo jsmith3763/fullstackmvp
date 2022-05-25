@@ -44,7 +44,7 @@ app.patch('/api/accounts/:id', async (req, res) => {
             task: task || currentTask.rows[0].task,
         }
 
-        const updatedTask = await db.query('UPDATE todos SET task = $1 WHERE account_id = $2 RETURNING *', [taskObj.task, req.params.id]);
+        const updatedTask = await db.query('UPDATE todos SET task = $1 WHERE id = $2 RETURNING *', [taskObj.task, req.params.id]);
         res.send(updatedTask.rows[0]);
     } catch (error) {
         res.send(error.message);

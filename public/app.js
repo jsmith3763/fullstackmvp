@@ -1,6 +1,8 @@
 //getting text box
 const textBox = document.getElementById("textbox");
 const listContainer = document.getElementById("todoContainer");
+const updateTextBox = document.getElementById("updateTextBox");
+getData();
 
 textBox.addEventListener("keypress", (e) => {
     if (e.key === "Enter") {
@@ -10,16 +12,30 @@ textBox.addEventListener("keypress", (e) => {
     }
 })
 
+
+
+
+
 function createToDoList(data) {
     listContainer.innerHTML = "";
     for (let i = 0; i < data.length; i++) {
         const newTask = document.createElement("div");
-        newTask.setAttribute("class", "taskDiv")
-        newTask.setAttribute("id", data[i].id);
+        const completeButton = document.createElement("button")
+        const updateButton = document.createElement("button")
+        completeButton.className = "completebutton";
+        completeButton.id = data[i].id;
+        completeButton.innerText = "Complete";
+        updateButton.className = "updatebutton";
+        updateButton.id = data[i].id;
+        updateButton.innerText = "Update";
+        newTask.className = "taskDiv";
+        newTask.id = data[i].id;
         newTask.innerText = data[i].task;
-        newTask.addEventListener("click", (e) => {
+        completeButton.addEventListener("click", (e) => {
             deleteTask(e.target.id);
         })
+        newTask.append(updateButton)
+        newTask.append(completeButton);
         listContainer.prepend(newTask);
     }
 }
@@ -55,9 +71,20 @@ async function createTask() {
 }
 
 async function updateTask(id) {
-    const task = document.getElementById(id);
+    const task = document.getElementById('updateTextBox').value;
+    const update = document.getElementById(id).value;
+    //console.log(update);
+    const updateTask = {
+        task: task
+    }
     try {
-
+        const response = await fetch(`http://localhost:3000/api/todo/${update.id}`, {//CHANGE WHEN DEPLOYED
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(updateTask)
+        })
+        const data = await response.json()
+        console.log(data)
     } catch (error) {
         console.error(error);
     }
@@ -79,4 +106,3 @@ async function deleteTask(id) {
 
 
 
-getData();
