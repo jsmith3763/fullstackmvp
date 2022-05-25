@@ -24,7 +24,8 @@ function createToDoList(data) {
     //while (listContainer.firstChild) listContainer.removeChild(listContainer.firstChild);
     for (let i = 0; i < data.length; i++) {
         const newTask = document.createElement("div");
-        newTask.textContent(data[i].task)
+        const textContent = document.createTextNode(data[i].task);
+        newTask.appendChild(textContent);
         listContainer.appendChild(newTask);
     }
 }
