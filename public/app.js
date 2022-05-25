@@ -12,14 +12,14 @@ textBox.addEventListener("keypress", (e) => {
     }
 })
 
-function getData() {
+async function getData() {
     const response = await fetch("https://tranquil-hamlet-82276.herokuapp.com/api/todo");
     const data = await response.json();
     createToDoList(data);
 }
 
 function createToDoList(data) {
-    while (listContainer.firstChild) listContainer.removeChild(listContainer.firstChild);
+    //while (listContainer.firstChild) listContainer.removeChild(listContainer.firstChild);
     for (let i = 0; i < data.length; i++) {
         const newTask = document.createElement("div");
         listContainer.appendChild(newTask);
