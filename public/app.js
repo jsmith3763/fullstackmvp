@@ -41,9 +41,10 @@ function createToDoList(data) {
 }
 
 async function getData() {
-    // const response = await fetch("https://tranquil-hamlet-82276.herokuapp.com/api/todo");
+    //const response = await fetch("https://tranquil-hamlet-82276.herokuapp.com/api/todo");
     try {
-        const response = await fetch("http://localhost:3000/api/todo");//CHANGE WHEN DEPLOYED
+        const response = await fetch("https://tranquil-hamlet-82276.herokuapp.com/api/todo");
+        //const response = await fetch("http://localhost:3000/api/todo");//CHANGE WHEN DEPLOYED
         const data = await response.json();
         //console.log(data)
         createToDoList(data);
@@ -58,7 +59,7 @@ async function createTask() {
         task: task
     }
     try {
-        const response = await fetch('http://localhost:3000/api/todo', {//CHANGE WHEN DEPLOYED
+        const response = await fetch('https://tranquil-hamlet-82276.herokuapp.com/api/todo', {//CHANGE WHEN DEPLOYED
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(newTask)
@@ -78,7 +79,7 @@ async function updateTask(id) {
         task: task
     }
     try {
-        const response = await fetch(`http://localhost:3000/api/todo/${update.id}`, {//CHANGE WHEN DEPLOYED
+        const response = await fetch(`https://tranquil-hamlet-82276.herokuapp.com/api/todo/${update.id}`, {//CHANGE WHEN DEPLOYED
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(updateTask)
@@ -94,7 +95,7 @@ async function deleteTask(id) {
     const task = document.getElementById(id);
     task.remove();
     try {
-        const response = await fetch(`http://localhost:3000/api/todo/${task.id}`, {//CHANGE WHEN DEPLOYED
+        const response = await fetch(`https://tranquil-hamlet-82276.herokuapp.com/api/todo/${task.id}`, {//CHANGE WHEN DEPLOYED
             method: 'DELETE'
         })
         const data = await response.json()
