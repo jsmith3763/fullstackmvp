@@ -1,6 +1,6 @@
-DROP DATABASE IF EXISTS todo_db;
+DROP DATABASE IF EXISTS todo;
 
-CREATE DATABASE todo_db;
+CREATE DATABASE todo;
 
 DROP TABLE IF EXISTS todos;
 DROP TABLE IF EXISTS completed;
@@ -12,5 +12,5 @@ CREATE TABLE todos(
 
 CREATE TABLE completed (
     id SERIAL PRIMARY KEY NOT NULL,
-    completedtask TEXT NOT NULL
+    task TEXT NOT NULL
 );
