@@ -19,11 +19,11 @@ textBox.addEventListener("keypress", (e) => {
     }
 })
 
-// function completeButtonEvent(elem) {
-//     elem.addEventListener("click", (e) => {
-//         deleteTask(elem.id);
-//     })
-// }
+function deleteButtonEvent(elem) {
+    elem.addEventListener("click", (e) => {
+        deleteTask(elem.id);
+    })
+}
 
 function completeButtonEvent(elem) {
     elem.addEventListener("click", (e) => {
@@ -97,21 +97,21 @@ function createCompletedList(data) {
     completedContainer.innerHTML = "";
     for (let i = 0; i < data.length; i++) {
         const completedTask = document.createElement("div");
-        const completeButton = document.createElement("button")
+        const deleteButton = document.createElement("button")
         const updateButton = document.createElement("button")
-        completeButton.className = "completebutton";
-        completeButton.id = data[i].id;
-        completeButton.innerText = "Complete";
-        updateButton.className = "updatebutton";
-        updateButton.id = data[i].id;
-        updateButton.innerText = "Update";
+        deleteButton.className = "completebutton";
+        deleteButton.id = data[i].id;
+        deleteButton.innerText = "Delete";
+        // updateButton.className = "updatebutton";
+        // updateButton.id = data[i].id;
+        // updateButton.innerText = "Update";
         completedTask.className = "taskDiv";
         completedTask.id = data[i].id;
         completedTask.innerText = data[i].task;
-        completeButtonEvent(completeButton);
-        updateButtonEvent(updateButton);
-        completedTask.append(updateButton)
-        completedTask.append(completeButton);
+        deleteButtonEvent(deleteButton);
+        //updateButtonEvent(updateButton);
+        //completedTask.append(updateButton)
+        completedTask.append(deleteButton);
         completedContainer.prepend(completedTask);
     }
     const seeCurrentButton = document.createElement("button");
