@@ -36,12 +36,13 @@ app.get("/api/todo/:id", async (req, res) => {
 });
 
 //update
-app.patch('/api/accounts/:id', async (req, res) => {
+app.patch('/api/todo/:id', async (req, res) => {
     try {
         const { task } = req.body;
         const currentTask = await db.query('SELECT * FROM todos WHERE id = $1', [req.params.id]);
+        //console.log(req.params.id)
         const taskObj = {
-            task: task || currentTask.rows[0].task,
+            task: task || currentTask.rows[0].task
         }
 
         const updatedTask = await db.query('UPDATE todos SET task = $1 WHERE id = $2 RETURNING *', [taskObj.task, req.params.id]);

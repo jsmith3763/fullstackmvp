@@ -1,7 +1,6 @@
 //getting text box
 const textBox = document.getElementById("textbox");
 const listContainer = document.getElementById("todoContainer");
-const updateTextBox = document.getElementById("updateTextBox");
 getData();
 
 textBox.addEventListener("keypress", (e) => {
@@ -27,12 +26,29 @@ function createToDoList(data) {
         completeButton.innerText = "Complete";
         updateButton.className = "updatebutton";
         updateButton.id = data[i].id;
+        //console.log(updateButton.id);
         updateButton.innerText = "Update";
         newTask.className = "taskDiv";
         newTask.id = data[i].id;
         newTask.innerText = data[i].task;
         completeButton.addEventListener("click", (e) => {
             deleteTask(e.target.id);
+        })
+        updateButton.addEventListener("click", (e) => {
+            const updateTextBox = document.createElement("input");
+            updateTextBox.id = "updateTextBox";
+            updateTextBox.placeholder = "Update task.."
+            newTask.append(updateTextBox);
+            updateTextBox.addEventListener("keypress", (e) => {
+                if (e.key === "Enter") {
+                    e.preventDefault();
+                    //console.log(updateButton.id);
+                    updateTask(updateButton.id);
+                    const test = document.getElementById('updateTextBox').value;
+                    newTask.innerText = test;
+                    getData();
+                }
+            })
         })
         newTask.append(updateButton)
         newTask.append(completeButton);
@@ -41,12 +57,10 @@ function createToDoList(data) {
 }
 
 async function getData() {
-    //const response = await fetch("https://tranquil-hamlet-82276.herokuapp.com/api/todo");
     try {
         const response = await fetch("https://tranquil-hamlet-82276.herokuapp.com/api/todo");
         //const response = await fetch("http://localhost:3000/api/todo");//CHANGE WHEN DEPLOYED
         const data = await response.json();
-        //console.log(data)
         createToDoList(data);
     } catch (error) {
         console.error(error)
@@ -72,9 +86,10 @@ async function createTask() {
 }
 
 async function updateTask(id) {
+    console.log(id)
     const task = document.getElementById('updateTextBox').value;
-    const update = document.getElementById(id).value;
-    //console.log(update);
+    const update = document.getElementById(id)
+    console.log(update)
     const updateTask = {
         task: task
     }
