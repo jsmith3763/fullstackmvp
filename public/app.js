@@ -3,6 +3,10 @@ const textBox = document.getElementById("textbox");
 const listContainer = document.getElementById("todoContainer");
 const completedContainer = document.getElementById("completedContainer");
 const seeCompleted = document.getElementById("seeCompleted");
+const localUrl = "http://localhost:3000/api/todo";
+const completedUrl = "http://localhost:3000/api/completed";
+const deployedUrlTodo = "https://tranquil-hamlet-82276.herokuapp.com/api/todo/";
+const deployedUrlCompleted = "https://tranquil-hamlet-82276.herokuapp.com/api/completed/";
 getTaskData();
 
 //Event listeners for buttons
@@ -121,7 +125,7 @@ function createCompletedList(data) {
 async function getTaskData() {
     try {
         //const response = await fetch("http://localhost:3000/api/todo");
-        const response = await fetch("http://localhost:3000/api/todo");//CHANGE WHEN DEPLOYED
+        const response = await fetch(deployedUrlTodo);//CHANGE WHEN DEPLOYED
         const data = await response.json();
         createToDoList(data);
     } catch (error) {
@@ -132,7 +136,7 @@ async function getTaskData() {
 //get one
 async function getOneTask(id) {
     try {
-        const response = await fetch(`http://localhost:3000/api/todo/${id}`);
+        const response = await fetch(`${deployedUrlTodo}${id}`);
         const data = await response.json();
         addToCompletedTable(data);
     } catch (error) {
@@ -147,7 +151,7 @@ async function addToCompletedTable(data) {
         task: task
     }
     try {
-        const response = await fetch('http://localhost:3000/api/completed', {//CHANGE WHEN DEPLOYED
+        const response = await fetch(deployedUrlCompleted, {//CHANGE WHEN DEPLOYED
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(newTask)
@@ -168,7 +172,7 @@ async function createTask() {
         task: task
     }
     try {
-        const response = await fetch('http://localhost:3000/api/todo', {//CHANGE WHEN DEPLOYED
+        const response = await fetch(deployedUrlTodo, {//CHANGE WHEN DEPLOYED
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(newTask)
@@ -190,7 +194,7 @@ async function updateTask(id) {
         task: task
     }
     try {
-        const response = await fetch(`http://localhost:3000/api/todo/${update.id}`, {//CHANGE WHEN DEPLOYED
+        const response = await fetch(`${deployedUrlTodo}${update.id}`, {//CHANGE WHEN DEPLOYED
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(updateTask)
@@ -207,7 +211,7 @@ async function deleteTask(id) {
     const task = document.getElementById(id);
     task.remove();
     try {
-        const response = await fetch(`http://localhost:3000/api/todo/${task.id}`, {//CHANGE WHEN DEPLOYED
+        const response = await fetch(`${deployedUrlTodo}${task.id}`, {//CHANGE WHEN DEPLOYED
             method: 'DELETE'
         })
         const data = await response.json()
@@ -221,7 +225,7 @@ async function deleteTask(id) {
 async function getCompletedTaskData() {
     try {
         //const response = await fetch("http://localhost:3000/api/todo");
-        const response = await fetch("http://localhost:3000/api/completed");//CHANGE WHEN DEPLOYED
+        const response = await fetch(deployedUrlCompleted);//CHANGE WHEN DEPLOYED
         const data = await response.json();
         createCompletedList(data);
     } catch (error) {
