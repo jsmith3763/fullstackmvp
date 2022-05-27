@@ -128,8 +128,16 @@ app.post('/api/completed', async (req, res) => {
     }
 });
 
-//delete for completed table - NOT NEEDED?
-
+//delete for completed table
+app.delete('/api/completed/:id', async (req, res) => {
+    try {
+        const deletedTask = await db.query('SELECT * FROM completed WHERE id = $1', [req.params.id]);
+        const deleted = await db.query('DELETE FROM completed WHERE id = $1', [req.params.id]);
+        res.json(deletedTask.rows);
+    } catch (error) {
+        console.error(error);
+    }
+})
 
 app.listen(process.env.PORT, () => {
     console.log(`Listening on Port ${process.env.PORT}`);

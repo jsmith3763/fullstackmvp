@@ -3,11 +3,13 @@ const textBox = document.getElementById("textbox");
 const listContainer = document.getElementById("todoContainer");
 const completedContainer = document.getElementById("completedContainer");
 const seeCompleted = document.getElementById("seeCompleted");
-const localUrl = "http://localhost:3000/api/todo";
-const completedUrl = "http://localhost:3000/api/completed";
+const quoteDiv = document.getElementById("quoteContainer");
+const pictureDiv = document.getElementById("coffeContainer");
+const localUrl = "http://localhost:3000/api/todo/";
+const localUrlCompleted = "http://localhost:3000/api/completed/";
 const deployedUrlTodo = "https://tranquil-hamlet-82276.herokuapp.com/api/todo/";
 const deployedUrlCompleted = "https://tranquil-hamlet-82276.herokuapp.com/api/completed/";
-getTaskData();
+
 
 //Event listeners for buttons
 textBox.addEventListener("keypress", (e) => {
@@ -21,7 +23,7 @@ textBox.addEventListener("keypress", (e) => {
 
 function deleteButtonEvent(elem) {
     elem.addEventListener("click", (e) => {
-        deleteTask(elem.id);
+        deleteCompletedTask(elem.id);
     })
 }
 
@@ -98,19 +100,14 @@ function createCompletedList(data) {
     for (let i = 0; i < data.length; i++) {
         const completedTask = document.createElement("div");
         const deleteButton = document.createElement("button")
-        const updateButton = document.createElement("button")
         deleteButton.className = "completebutton";
         deleteButton.id = data[i].id;
         deleteButton.innerText = "Delete";
-        // updateButton.className = "updatebutton";
-        // updateButton.id = data[i].id;
-        // updateButton.innerText = "Update";
         completedTask.className = "taskDiv";
         completedTask.id = data[i].id;
         completedTask.innerText = data[i].task;
         deleteButtonEvent(deleteButton);
-        //updateButtonEvent(updateButton);
-        //completedTask.append(updateButton)
+
         completedTask.append(deleteButton);
         completedContainer.prepend(completedTask);
     }
@@ -124,8 +121,7 @@ function createCompletedList(data) {
 //Get all
 async function getTaskData() {
     try {
-        //const response = await fetch("http://localhost:3000/api/todo");
-        const response = await fetch(deployedUrlTodo);//CHANGE WHEN DEPLOYED
+        const response = await fetch(deployedUrlTodo);
         const data = await response.json();
         createToDoList(data);
     } catch (error) {
@@ -151,13 +147,12 @@ async function addToCompletedTable(data) {
         task: task
     }
     try {
-        const response = await fetch(deployedUrlCompleted, {//CHANGE WHEN DEPLOYED
+        const response = await fetch(deployedUrlCompleted, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(newTask)
         })
         const data = await response.json()
-        //console.log(data)
     } catch (error) {
         console.error(error);
     }
@@ -172,7 +167,7 @@ async function createTask() {
         task: task
     }
     try {
-        const response = await fetch(deployedUrlTodo, {//CHANGE WHEN DEPLOYED
+        const response = await fetch(deployedUrlTodo, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(newTask)
@@ -189,13 +184,11 @@ async function updateTask(id) {
     console.log(id)
     const task = document.getElementById('updateTextBox').value;
     const update = document.getElementById(id)
-    console.log(update)
     const updateTask = {
         task: task
     }
     try {
-        const response = await fetch(`${deployedUrlTodo}${update.id}`, {//CHANGE WHEN DEPLOYED
-            method: 'PATCH',
+        const response = await fetch(`${deployedUrlTodo}${update.id}`, {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(updateTask)
         })
@@ -206,12 +199,26 @@ async function updateTask(id) {
     }
 }
 
-//delete one
+//delete task from todo table
 async function deleteTask(id) {
     const task = document.getElementById(id);
     task.remove();
     try {
-        const response = await fetch(`${deployedUrlTodo}${task.id}`, {//CHANGE WHEN DEPLOYED
+        const response = await fetch(`${deployedUrlTodo}${task.id}`, {
+        })
+        const data = await response.json()
+        console.log(data);
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+//delete one from completed table
+async function deleteCompletedTask(id) {
+    const task = document.getElementById(id);
+    task.remove();
+    try {
+        const response = await fetch(`${deployedUrlCompleted}${task.id}`, {
             method: 'DELETE'
         })
         const data = await response.json()
@@ -224,8 +231,7 @@ async function deleteTask(id) {
 //Get all
 async function getCompletedTaskData() {
     try {
-        //const response = await fetch("http://localhost:3000/api/todo");
-        const response = await fetch(deployedUrlCompleted);//CHANGE WHEN DEPLOYED
+        const response = await fetch(deployedUrlCompleted);
         const data = await response.json();
         createCompletedList(data);
     } catch (error) {
@@ -233,26 +239,39 @@ async function getCompletedTaskData() {
     }
 }
 
-// //Update one
-// async function updateTask(id) {
-//     console.log(id)
-//     const task = document.getElementById('updateTextBox').value;
-//     const update = document.getElementById(id)
-//     console.log(update)
-//     const updateTask = {
-//         task: task
-//     }
-//     try {
-//         const response = await fetch(`http://localhost:3000/api/completed/${update.id}`, {//CHANGE WHEN DEPLOYED
-//             method: 'PATCH',
-//             headers: { 'Content-Type': 'application/json' },
-//             body: JSON.stringify(updateTask)
-//         })
-//         const data = await response.json()
-//         task.value = "";
-//     } catch (error) {
-//         console.error(error);
-//     }
-// }
+async function getRandomQuote() {
+    try {
+        const response = await fetch("https://zenquotes.io/api/random ");
+        const data = await response.json();
+        quoteDiv.innerText = data[0].q + ' -' + data[0].a;
+    } catch (error) {
+        console.error(error);
+    }
+}
 
+const timeH = document.getElementById("timerContainer");
+let timeSecond = 30;
+
+const countDown = setInterval(() => {
+    timeSecond--;
+    displayTime(timeSecond);
+    if (timeSecond <= 0 || timeSecond < 1) {
+        endTime();
+        clearInterval(countDown);
+    }
+}, 1000);
+
+function displayTime(second) {
+    const min = Math.floor(second / 60);
+    const sec = Math.floor(second % 60);
+    timeH.innerHTML = `${min < 10 ? '0' : ''}${min}:${sec < 10 ? '0' : ''}${sec}`
+}
+
+function endTime() {
+    timeH.innerHTML = 'TAKE A BREAK'
+}
+
+
+getTaskData();
+getRandomQuote();
 
