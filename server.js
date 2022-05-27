@@ -40,7 +40,6 @@ app.patch('/api/todo/:id', async (req, res) => {
     try {
         const { task } = req.body;
         const currentTask = await db.query('SELECT * FROM todos WHERE id = $1', [req.params.id]);
-        //console.log(req.params.id)
         const taskObj = {
             task: task || currentTask.rows[0].task
         }

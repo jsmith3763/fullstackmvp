@@ -107,7 +107,6 @@ function createCompletedList(data) {
         completedTask.id = data[i].id;
         completedTask.innerText = data[i].task;
         deleteButtonEvent(deleteButton);
-
         completedTask.append(deleteButton);
         completedContainer.prepend(completedTask);
     }
@@ -183,11 +182,13 @@ async function createTask() {
 async function updateTask(id) {
     const task = document.getElementById('updateTextBox').value;
     const update = document.getElementById(id)
+    console.log(update.id)
     const updateTask = {
         task: task
     }
     try {
-        const response = await fetch(`${deployedUrlTodo}${id}`, {
+        const response = await fetch(`${deployedUrlTodo}${Number(update.id)}`, {
+            method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(updateTask)
         })
@@ -204,6 +205,7 @@ async function deleteTask(id) {
     task.remove();
     try {
         const response = await fetch(`${deployedUrlTodo}${task.id}`, {
+            method: 'DELETE'
         })
         const data = await response.json()
         console.log(data);
