@@ -4,8 +4,8 @@ const listContainer = document.getElementById("todoContainer");
 const completedContainer = document.getElementById("completedContainer");
 const seeCompleted = document.getElementById("seeCompleted");
 const quoteDiv = document.getElementById("quoteContainer");
-const localUrl = "http://localhost:3000/api/todo/";
-const localUrlCompleted = "http://localhost:3000/api/completed/";
+const localUrlToDo = "http://localhost:3000/api/todo/";
+const localUrlToDoCompleted = "http://localhost:3000/api/completed/";
 const deployedUrlToDo = "https://tranquil-hamlet-82276.herokuapp.com/api/todo/";
 const deployedUrlCompleted = "https://tranquil-hamlet-82276.herokuapp.com/api/completed/";
 
@@ -143,7 +143,7 @@ function createCompletedList(data) {
 //Get all
 async function getTaskData() {
     try {
-        const response = await fetch(localUrl);
+        const response = await fetch(deployedUrlToDo);
         const data = await response.json();
         createToDoList(data);
     } catch (error) {
@@ -154,7 +154,7 @@ async function getTaskData() {
 //get one
 async function getOneTask(id) {
     try {
-        const response = await fetch(`${localUrl}${id}`);
+        const response = await fetch(`${deployedUrlToDo}${id}`);
         const data = await response.json();
         addToCompletedTable(data);
     } catch (error) {
@@ -169,7 +169,7 @@ async function addToCompletedTable(data) {
         task: task
     }
     try {
-        const response = await fetch(localUrlCompleted, {
+        const response = await fetch(deployedUrlToDoCompleted, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(newTask)
@@ -189,7 +189,7 @@ async function createTask() {
         task: task
     }
     try {
-        const response = await fetch(localUrl, {
+        const response = await fetch(deployedUrlToDo, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(newTask)
@@ -210,7 +210,7 @@ async function updateTask(id) {
         task: task
     }
     try {
-        const response = await fetch(`${localUrl}${Number(update.id)}`, {
+        const response = await fetch(`${deployedUrlToDo}${Number(update.id)}`, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(updateTask)
@@ -227,7 +227,7 @@ async function deleteTask(id) {
     const task = document.getElementById(id);
     task.remove();
     try {
-        const response = await fetch(`${localUrl}${task.id}`, {
+        const response = await fetch(`${deployedUrlToDo}${task.id}`, {
             method: 'DELETE'
         })
         const data = await response.json()
@@ -242,7 +242,7 @@ async function deleteCompletedTask(id) {
     const task = document.getElementById(id);
     task.remove();
     try {
-        const response = await fetch(`${localUrlCompleted}${task.id}`, {
+        const response = await fetch(`${deployedUrlToDoCompleted}${task.id}`, {
             method: 'DELETE'
         })
         const data = await response.json()
@@ -255,7 +255,7 @@ async function deleteCompletedTask(id) {
 //Get all
 async function getCompletedTaskData() {
     try {
-        const response = await fetch(localUrlCompleted);
+        const response = await fetch(deployedUrlToDoCompleted);
         const data = await response.json();
         createCompletedList(data);
     } catch (error) {
