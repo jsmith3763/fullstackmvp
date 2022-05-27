@@ -181,14 +181,13 @@ async function createTask() {
 
 //Update one
 async function updateTask(id) {
-    console.log(id)
     const task = document.getElementById('updateTextBox').value;
     const update = document.getElementById(id)
     const updateTask = {
         task: task
     }
     try {
-        const response = await fetch(`${deployedUrlTodo}${update.id}`, {
+        const response = await fetch(`${deployedUrlTodo}${id}`, {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(updateTask)
         })
