@@ -1,4 +1,4 @@
-//getting text box
+//getting elements
 const textBox = document.getElementById("textbox");
 const listContainer = document.getElementById("todoContainer");
 const completedContainer = document.getElementById("completedContainer");
@@ -265,7 +265,7 @@ async function getCompletedTaskData() {
 
 async function getRandomQuote() {
     try {
-        const response = await fetch("https://zenquotes.io/api/random ");
+        const response = await fetch("https://zenquotes.io/api/random");
         const data = await response.json();
         quoteDiv.innerText = data[0].q + ' -' + data[0].a;
     } catch (error) {

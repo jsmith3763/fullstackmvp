@@ -14,9 +14,10 @@ app.use(express.json());
 //getall
 app.get("/api/todo", async (req, res) => {
     try {
-        await db.connect();
+        let client = await db.connect();
         const result = await db.query("SELECT * FROM todos");
         res.json(result.rows);
+        client.release();
     } catch (error) {
         console.error(error);
         res.send("Error: ", error);
@@ -26,9 +27,10 @@ app.get("/api/todo", async (req, res) => {
 //getone
 app.get("/api/todo/:id", async (req, res) => {
     try {
-        await db.connect();
+        let client = await db.connect();
         const result = await db.query("SELECT * FROM todos WHERE id = $1", [req.params.id]);
         res.json(result.rows);
+        client.release();
     } catch (error) {
         console.error(error);
         res.send("Error: ", error);
@@ -38,6 +40,7 @@ app.get("/api/todo/:id", async (req, res) => {
 //update
 app.patch('/api/todo/:id', async (req, res) => {
     try {
+        let client = await db.connect();
         const { task } = req.body;
         const currentTask = await db.query('SELECT * FROM todos WHERE id = $1', [req.params.id]);
         const taskObj = {
@@ -46,6 +49,7 @@ app.patch('/api/todo/:id', async (req, res) => {
 
         const updatedTask = await db.query('UPDATE todos SET task = $1 WHERE id = $2 RETURNING *', [taskObj.task, req.params.id]);
         res.send(updatedTask.rows[0]);
+        client.release()
     } catch (error) {
         res.send(error.message);
     }
@@ -54,11 +58,12 @@ app.patch('/api/todo/:id', async (req, res) => {
 //post
 app.post('/api/todo', async (req, res) => {
     try {
+        let client = await db.connect();
         const { task } = req.body;
         const { rows } = await db.query('INSERT INTO todos (task) VALUES($1) RETURNING *', [task]);
         res.send({ data: (rows), message: "New task has been created" });
         console.log({ rows });
-        console.log('Task was created');
+        client.release();
     } catch (error) {
         console.error(error);
     }
@@ -67,9 +72,11 @@ app.post('/api/todo', async (req, res) => {
 //delete
 app.delete('/api/todo/:id', async (req, res) => {
     try {
+        let client = await db.connect();
         const deletedTask = await db.query('SELECT * FROM todos WHERE id = $1', [req.params.id]);
         const deleted = await db.query('DELETE FROM todos WHERE id = $1', [req.params.id]);
         res.json(deletedTask.rows);
+        client.release();
     } catch (error) {
         console.error(error);
     }
@@ -79,9 +86,10 @@ app.delete('/api/todo/:id', async (req, res) => {
 //getall for completed table
 app.get("/api/completed", async (req, res) => {
     try {
-        await db.connect();
+        let client = await db.connect();
         const result = await db.query("SELECT * FROM completed");
         res.json(result.rows);
+        client.release();
     } catch (error) {
         console.error(error);
         res.send("Error: ", error);
@@ -91,9 +99,10 @@ app.get("/api/completed", async (req, res) => {
 //getone for completedtable
 app.get("/api/completed/:id", async (req, res) => {
     try {
-        await db.connect();
+        let client = await db.connect();
         const result = await db.query("SELECT * FROM completed WHERE id = $1", [req.params.id]);
         res.json(result.rows);
+        client.release();
     } catch (error) {
         console.error(error);
         res.send("Error: ", error);
@@ -103,6 +112,7 @@ app.get("/api/completed/:id", async (req, res) => {
 //update for completed table
 app.patch('/api/completed/:id', async (req, res) => {
     try {
+        let client = await db.connect();
         const { task } = req.body;
         const currentTask = await db.query('SELECT * FROM completed WHERE id = $1', [req.params.id]);
         const taskObj = {
@@ -110,6 +120,7 @@ app.patch('/api/completed/:id', async (req, res) => {
         }
         const updatedTask = await db.query('UPDATE completed SET task = $1 WHERE id = $2 RETURNING *', [taskObj.task, req.params.id]);
         res.send(updatedTask.rows[0]);
+        client.release();
     } catch (error) {
         res.send(error.message);
     }
@@ -118,10 +129,12 @@ app.patch('/api/completed/:id', async (req, res) => {
 //post for completed table
 app.post('/api/completed', async (req, res) => {
     try {
+        let client = await db.connect();
         const { task } = req.body;
         const { rows } = await db.query('INSERT INTO completed (task) VALUES($1) RETURNING *', [task]);
         res.send({ data: (rows), message: "New task has been created" });
         console.log({ rows });
+        client.release();
     } catch (error) {
         console.error(error);
     }
@@ -130,9 +143,11 @@ app.post('/api/completed', async (req, res) => {
 //delete for completed table
 app.delete('/api/completed/:id', async (req, res) => {
     try {
+        let client = await db.connect();
         const deletedTask = await db.query('SELECT * FROM completed WHERE id = $1', [req.params.id]);
         const deleted = await db.query('DELETE FROM completed WHERE id = $1', [req.params.id]);
         res.json(deletedTask.rows);
+        client.release();
     } catch (error) {
         console.error(error);
     }
