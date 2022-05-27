@@ -169,7 +169,7 @@ async function addToCompletedTable(data) {
         task: task
     }
     try {
-        const response = await fetch(deployedUrlToDoCompleted, {
+        const response = await fetch(deployedUrlCompleted, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(newTask)
@@ -242,7 +242,7 @@ async function deleteCompletedTask(id) {
     const task = document.getElementById(id);
     task.remove();
     try {
-        const response = await fetch(`${deployedUrlToDoCompleted}${task.id}`, {
+        const response = await fetch(`${deployedUrlCompleted}${task.id}`, {
             method: 'DELETE'
         })
         const data = await response.json()
@@ -255,7 +255,7 @@ async function deleteCompletedTask(id) {
 //Get all
 async function getCompletedTaskData() {
     try {
-        const response = await fetch(deployedUrlToDoCompleted);
+        const response = await fetch(deployedUrlCompleted);
         const data = await response.json();
         createCompletedList(data);
     } catch (error) {
