@@ -35,25 +35,25 @@ const countDown = setInterval(() => {
 }, 1000);
 
 //Event listeners for buttons
-textBox.addEventListener("keypress", (e) => {
+textBox.addEventListener("keypress", async (e) => {
     if (e.key === "Enter") {
         e.preventDefault();
-        createTask();
-        getTaskData();
+        await createTask();
+        await getTaskData();
         textBox.value = "";
     }
 })
 
 function deleteButtonEvent(elem) {
-    elem.addEventListener("click", (e) => {
-        deleteCompletedTask(elem.id);
+    elem.addEventListener("click", async (e) => {
+        await deleteCompletedTask(elem.id);
     })
 }
 
 function completeButtonEvent(elem) {
-    elem.addEventListener("click", (e) => {
-        getOneTask(elem.id);
-        deleteTask(elem.id);
+    elem.addEventListener("click", async (e) => {
+        await getOneTask(elem.id);
+        await deleteTask(elem.id);
     })
 }
 
@@ -63,25 +63,25 @@ function updateButtonEvent(elem, taskElem) {
         updateTextBox.id = "updateTextBox";
         updateTextBox.placeholder = "Update task.."
         taskElem.append(updateTextBox);
-        updateTextBox.addEventListener("keypress", (e) => {
+        updateTextBox.addEventListener("keypress", async (e) => {
             if (e.key === "Enter") {
                 e.preventDefault();
-                updateTask(elem.id);
-                getTaskData();
+                await updateTask(elem.id);
+                await getTaskData();
             }
         })
     })
 }
 
 function seeCompletedEvent(elem) {
-    elem.addEventListener("click", (e) => {
-        getCompletedTaskData();
+    elem.addEventListener("click", async (e) => {
+        await getCompletedTaskData();
     })
 }
 
 function seeCurrentEvent(elem) {
-    elem.addEventListener("click", (e) => {
-        getTaskData();
+    elem.addEventListener("click", async (e) => {
+        await getTaskData();
     })
 }
 
