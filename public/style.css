@@ -36,6 +36,14 @@ body {
     justify-content: space-evenly;
 }
 
+#timebox {
+    display: flex;
+    flex-wrap: wrap;
+    border-style: inset;
+    width: 10vw;
+    height: 1vw;
+}
+
 #todoContainer {
     display: flex;
     flex-wrap: wrap;
@@ -67,6 +75,13 @@ body {
 
 .column {
     width: 33.33%;
+    justify-content: center;
+}
+
+#columnThree {
+    display: flex;
+    flex-wrap: wrap;
+    margin: auto;
     justify-content: center;
 }
 

@@ -4,12 +4,35 @@ const listContainer = document.getElementById("todoContainer");
 const completedContainer = document.getElementById("completedContainer");
 const seeCompleted = document.getElementById("seeCompleted");
 const quoteDiv = document.getElementById("quoteContainer");
-const pictureDiv = document.getElementById("coffeContainer");
 const localUrl = "http://localhost:3000/api/todo/";
 const localUrlCompleted = "http://localhost:3000/api/completed/";
-const deployedUrlTodo = "https://tranquil-hamlet-82276.herokuapp.com/api/todo/";
+const deployedUrlToDo = "https://tranquil-hamlet-82276.herokuapp.com/api/todo/";
 const deployedUrlCompleted = "https://tranquil-hamlet-82276.herokuapp.com/api/completed/";
 
+getTaskData();
+getRandomQuote();
+
+const timeH = document.getElementById("timerContainer");
+let timeSecond = 60;
+
+function displayTime(second) {
+    const min = Math.floor(second / 60);
+    const sec = Math.floor(second % 60);
+    timeH.innerHTML = `${min < 10 ? '0' : ''}${min}:${sec < 10 ? '0' : ''}${sec}`
+}
+
+function endTime() {
+    timeH.innerHTML = 'TAKE A BREAK'
+}
+
+const countDown = setInterval(() => {
+    timeSecond--;
+    displayTime(timeSecond);
+    if (timeSecond <= 0 || timeSecond < 1) {
+        endTime();
+        clearInterval(countDown);
+    }
+}, 1000);
 
 //Event listeners for buttons
 textBox.addEventListener("keypress", (e) => {
@@ -120,7 +143,7 @@ function createCompletedList(data) {
 //Get all
 async function getTaskData() {
     try {
-        const response = await fetch(deployedUrlTodo);
+        const response = await fetch(localUrl);
         const data = await response.json();
         createToDoList(data);
     } catch (error) {
@@ -131,7 +154,7 @@ async function getTaskData() {
 //get one
 async function getOneTask(id) {
     try {
-        const response = await fetch(`${deployedUrlTodo}${id}`);
+        const response = await fetch(`${localUrl}${id}`);
         const data = await response.json();
         addToCompletedTable(data);
     } catch (error) {
@@ -146,7 +169,7 @@ async function addToCompletedTable(data) {
         task: task
     }
     try {
-        const response = await fetch(deployedUrlCompleted, {
+        const response = await fetch(localUrlCompleted, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(newTask)
@@ -166,7 +189,7 @@ async function createTask() {
         task: task
     }
     try {
-        const response = await fetch(deployedUrlTodo, {
+        const response = await fetch(localUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(newTask)
@@ -187,7 +210,7 @@ async function updateTask(id) {
         task: task
     }
     try {
-        const response = await fetch(`${deployedUrlTodo}${Number(update.id)}`, {
+        const response = await fetch(`${localUrl}${Number(update.id)}`, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(updateTask)
@@ -204,7 +227,7 @@ async function deleteTask(id) {
     const task = document.getElementById(id);
     task.remove();
     try {
-        const response = await fetch(`${deployedUrlTodo}${task.id}`, {
+        const response = await fetch(`${localUrl}${task.id}`, {
             method: 'DELETE'
         })
         const data = await response.json()
@@ -219,7 +242,7 @@ async function deleteCompletedTask(id) {
     const task = document.getElementById(id);
     task.remove();
     try {
-        const response = await fetch(`${deployedUrlCompleted}${task.id}`, {
+        const response = await fetch(`${localUrlCompleted}${task.id}`, {
             method: 'DELETE'
         })
         const data = await response.json()
@@ -232,7 +255,7 @@ async function deleteCompletedTask(id) {
 //Get all
 async function getCompletedTaskData() {
     try {
-        const response = await fetch(deployedUrlCompleted);
+        const response = await fetch(localUrlCompleted);
         const data = await response.json();
         createCompletedList(data);
     } catch (error) {
@@ -250,29 +273,6 @@ async function getRandomQuote() {
     }
 }
 
-const timeH = document.getElementById("timerContainer");
-let timeSecond = 30;
-
-const countDown = setInterval(() => {
-    timeSecond--;
-    displayTime(timeSecond);
-    if (timeSecond <= 0 || timeSecond < 1) {
-        endTime();
-        clearInterval(countDown);
-    }
-}, 1000);
-
-function displayTime(second) {
-    const min = Math.floor(second / 60);
-    const sec = Math.floor(second % 60);
-    timeH.innerHTML = `${min < 10 ? '0' : ''}${min}:${sec < 10 ? '0' : ''}${sec}`
-}
-
-function endTime() {
-    timeH.innerHTML = 'TAKE A BREAK'
-}
 
 
-getTaskData();
-getRandomQuote();
 
